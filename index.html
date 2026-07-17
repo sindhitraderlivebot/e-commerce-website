@@ -603,6 +603,9 @@
             });
         }
 
+        // ==========================================
+        // 🔄 FIXED: INLINE FIX TO SYNC SYMBOL UPDATES
+        // ==========================================
         function onPairChange() {
             const select = document.getElementById('asset-pair');
             currentSymbol = select.value;
@@ -830,7 +833,9 @@
             }
         }
 
-        // GENERATE FRESH ACTIVE CODE
+        // ==========================================
+        // 🛠️ BUG FIX: GENERATE FRESH ACTIVE CODE & AUTO-RENDER
+        // ==========================================
         function generateNewOneTimeCode() {
             const randomID = Math.floor(1000 + Math.random() * 9000);
             const newCode = `SINDHIPRO-${randomID}`;
@@ -839,8 +844,11 @@
             activeCodes.push(newCode);
 
             localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
-            renderPartnerCodes();
-            alert(`🔥 NEW ONE-TIME CODE GENERATED:\n\n${newCode}\n\nThis code will work perfectly on the login screen, and will burn permanently after single use.`);
+            
+            // 🔥 CRITICAL FIX: फ़ौरन UI को री-रेंडर करें ताकि कोड तुरंत लिस्ट में दिखने लगे!
+            renderPartnerCodes(); 
+            
+            alert(`🔥 NEW ONE-TIME CODE GENERATED:\n\n${newCode}\n\nThis code is now live. Share it with your friends! It will burn permanently after single use.`);
         }
 
         function copyCodeText(text) {
@@ -848,6 +856,7 @@
             alert(`Copied: ${text}`);
         }
 
+        // LOGOUT LOGIC
         function logout() {
             localStorage.removeItem('st_user_email');
             localStorage.removeItem('st_user_vip');
