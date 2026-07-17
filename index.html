@@ -3,388 +3,550 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sindhi Trader Bot - Ultimate Forex Signal Terminal</title>
-    <!-- Tailwind CSS for styling -->
+    <title>Sindhi Trader Bot - Premium SMC & Price Action Terminal</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- TradingView Widget Script -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         body {
-            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-            color: #f8fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #0b0f19 0%, #02060c 100%);
+            color: #f1f5f9;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
-        .neon-border {
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .premium-border {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.35);
         }
-        .glow-text-green {
-            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        .glow-gold-text {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
         }
-        /* Custom scrollbar for clean select/lists */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #020617;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #10b981;
+        .neon-green-border {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Header / Navigation -->
-    <header class="border-b border-gray-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+    <!-- NAVIGATION HEADER -->
+    <header class="border-b border-slate-900 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <span class="text-xl md:text-2xl font-black tracking-wider text-emerald-500 glow-text-green">SINDHI TRADER BOT</span>
-                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30 font-bold">V5.0 ULTIMATE</span>
+            <div class="flex items-center space-x-2.5">
+                <span class="text-xl md:text-2xl font-black tracking-wider text-amber-500 glow-gold-text">SINDHI TRADER BOT</span>
+                <span class="bg-amber-500/10 text-amber-400 text-[10px] px-2.5 py-0.5 rounded-full border border-amber-500/30 font-bold uppercase tracking-widest">v7.2 VIP</span>
             </div>
-            <div id="user-profile" class="hidden flex items-center space-x-3">
-                <span id="user-email-display" class="text-xs md:text-sm text-gray-400"></span>
-                <button onclick="logout()" class="text-xs bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded transition">Logout</button>
+            
+            <div class="flex items-center space-x-4">
+                <div id="vip-status-badge" class="hidden text-[10px] bg-amber-500/15 border border-amber-500/30 text-amber-400 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-crown text-[9px]"></i> VIP Premium
+                </div>
+                <div id="user-profile" class="hidden flex items-center space-x-3">
+                    <span id="user-email-display" class="text-xs text-slate-400 font-medium"></span>
+                    <button onclick="logout()" class="text-xs bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1.5 rounded-lg border border-red-500/20 transition">Logout</button>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- MAIN ROOT WRAPPER -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
         
-        <!-- SECTION 1: AUTHENTICATION (SIGN UP) -->
-        <section id="auth-section" class="max-w-md mx-auto bg-slate-900/90 p-8 rounded-2xl neon-border my-12">
+        <!-- SECTION 1: SIGN UP & OTP PORTAL -->
+        <section id="auth-section" class="max-w-md mx-auto bg-slate-950/90 p-8 rounded-2xl neon-green-border my-8">
             <div class="text-center mb-6">
-                <i class="fa-solid fa-chart-line text-4xl text-emerald-500 mb-2"></i>
-                <h2 class="text-2xl font-bold">Access Trading Terminal</h2>
-                <p class="text-gray-400 text-sm mt-1">Sign up to access real-time charts and indicators</p>
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-3 border border-emerald-500/20">
+                    <i class="fa-solid fa-user-shield text-xl text-emerald-400"></i>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight">Create Trading Account</h2>
+                <p class="text-slate-400 text-xs mt-1.5">Sign up to receive your instant verification OTP</p>
             </div>
-            <form id="signup-form" onsubmit="handleSignUp(event)" class="space-y-4">
+
+            <!-- Stage 1.1: Registration Form -->
+            <form id="signup-form" onsubmit="sendOTP(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Full Name</label>
-                    <input type="text" id="signup-name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition" placeholder="John Doe">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Email Address</label>
-                    <input type="email" id="signup-email" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition" placeholder="you@domain.com">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="signup-name" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition text-sm" placeholder="e.g. Sarang Khan">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Password</label>
-                    <input type="password" id="signup-password" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition" placeholder="••••••••">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" id="signup-email" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition text-sm" placeholder="you@domain.com">
                 </div>
-                <div class="flex items-center space-x-2 py-2">
-                    <input type="checkbox" required id="terms" class="accent-emerald-500">
-                    <label for="terms" class="text-xs text-gray-400">I agree to risk terms and financial disclosure.</label>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="signup-password" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition text-sm" placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-lg transition duration-300 shadow-lg shadow-emerald-500/20">
-                    Enter Dashboard <i class="fa-solid fa-arrow-right ml-1"></i>
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-lg transition duration-300 shadow-lg shadow-emerald-500/15 text-sm uppercase tracking-wider">
+                    Generate Email OTP <i class="fa-solid fa-paper-plane ml-1"></i>
                 </button>
+            </form>
+
+            <!-- Stage 1.2: OTP Form (Initially Hidden) -->
+            <form id="otp-form" onsubmit="verifyOTP(event)" class="hidden space-y-4">
+                <div class="bg-emerald-500/10 border border-emerald-500/20 p-3.5 rounded-lg text-center text-xs text-emerald-400 leading-relaxed">
+                    <i class="fa-solid fa-envelope-open-text mr-1 animate-bounce"></i> 
+                    Security OTP simulated! Copy the code from the popup alert and paste it below.
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Enter Verification OTP</label>
+                    <input type="text" id="otp-input" required maxlength="6" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 tracking-[0.4em] text-center text-xl font-black" placeholder="000000">
+                </div>
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-lg transition duration-300 shadow-lg shadow-emerald-500/15 text-sm uppercase tracking-wider">
+                    Verify & Access Terminal <i class="fa-solid fa-circle-check ml-1"></i>
+                </button>
+                <button type="button" onclick="resetAuthFlow()" class="w-full text-xs text-slate-500 hover:text-slate-300 text-center block mt-2">Back to Registration</button>
             </form>
         </section>
 
-        <!-- SECTION 2: TRADING DASHBOARD -->
+        <!-- SECTION 2: VIP PREMIUM PAYWALL (LOCKED SCREEN) -->
+        <section id="paywall-section" class="hidden max-w-lg mx-auto bg-slate-950/95 p-8 rounded-2xl premium-border my-6">
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-amber-500/15 rounded-full flex items-center justify-center mx-auto mb-3 border border-amber-500/30">
+                    <i class="fa-solid fa-crown text-2xl text-amber-400 animate-pulse"></i>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight text-white">Activate Premium VIP Access</h2>
+                <p class="text-slate-400 text-xs mt-1.5">SMC, Order Blocks & live precision signals require a valid subscription.</p>
+                <div class="mt-4 inline-block bg-amber-500/10 text-amber-400 font-extrabold text-sm px-4 py-1.5 rounded-full border border-amber-500/20">
+                    Pricing: $50 for 6 Months (VIP PASS)
+                </div>
+            </div>
+
+            <!-- Double Checkout Options -->
+            <div class="space-y-6">
+                
+                <!-- Method A: Deposit USDT TRC-20 -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-wallet"></i> Method 1: Deposit USDT (TRC-20)
+                    </h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                        Send exactly <strong class="text-white">$50 USDT</strong> to your unique TRC-20 deposit address below. Once completed, submit your verification request.
+                    </p>
+                    <div class="bg-slate-950 p-3 rounded-lg flex items-center justify-between border border-slate-850">
+                        <span id="usdt-address" class="text-xs font-mono text-emerald-400 select-all truncate mr-2 font-bold">TQQBhUVxjbSkxVHNUXCRpfr5AkxJ9GbpCH</span>
+                        <button onclick="copyUSDTAddress()" class="text-xs bg-slate-850 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition flex items-center gap-1 shrink-0">
+                            <i class="fa-solid fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <button onclick="simulatePaymentActivation()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold py-2.5 rounded-lg transition uppercase tracking-wider">
+                        I Have Deposited, Verify Transaction <i class="fa-solid fa-spinner animate-spin ml-1 hidden" id="payment-spinner"></i>
+                    </button>
+                </div>
+
+                <!-- Separation Line -->
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-slate-800/80"></div>
+                    <span class="flex-shrink mx-4 text-[10px] text-slate-500 uppercase font-black tracking-widest">Or Use Access Code</span>
+                    <div class="flex-grow border-t border-slate-800/80"></div>
+                </div>
+
+                <!-- Method B: Secret Promocode / Bypass -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key"></i> Method 2: VIP Partner Promocode
+                    </h3>
+                    <p class="text-[11px] text-slate-400">
+                        Enter a unique, one-time-use invite code or your Admin Master Key to unlock.
+                    </p>
+                    <div class="flex gap-2">
+                        <input type="text" id="promocode-input" class="flex-grow bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-amber-500 uppercase tracking-widest font-mono font-bold" placeholder="ENTER CODE HERE">
+                        <button onclick="applyPromocode()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs uppercase transition shrink-0">
+                            Apply Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FULL TRADING DASHBOARD (MAIN PANEL) -->
         <section id="dashboard-section" class="hidden space-y-6">
             
-            <!-- Dashboard Welcome Header -->
-            <div class="bg-slate-900/40 p-4 md:p-6 rounded-2xl border border-slate-800/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <!-- Welcome Header -->
+            <div class="bg-slate-950/60 p-4 md:p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 class="text-xl md:text-2xl font-bold text-white">Welcome back, Trader! 👋</h1>
-                    <p class="text-gray-400 text-xs md:text-sm">Explore premium live charts and institutional AI analysis below.</p>
+                    <h1 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                        Welcome to Terminal VIP <span class="text-amber-500"><i class="fa-solid fa-crown"></i></span>
+                    </h1>
+                    <p class="text-slate-400 text-xs mt-1">SMC Orders Blocks, Liquidity Sweeps, and real-time confluences unlocked.</p>
                 </div>
-                <div class="flex flex-col items-end gap-1">
-                    <div class="flex items-center space-x-2 text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/20">
-                        <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        <span class="font-bold uppercase tracking-wider">Market Scan Connected</span>
+                
+                <!-- Live System Alerts (News Filter Widget) -->
+                <div class="flex flex-col items-end gap-1.5">
+                    <div class="flex items-center space-x-2 text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg border border-red-500/20">
+                        <i class="fa-solid fa-circle-exclamation animate-pulse"></i>
+                        <span class="font-bold uppercase tracking-wider" id="news-status-banner">News Engine: LIVE NEWS RADAR ON</span>
                     </div>
-                    <span id="live-candle-timer" class="text-[10px] text-gray-400 font-mono mt-1">Calculating Candle Status...</span>
+                    <span id="live-clock" class="text-[10px] text-slate-400 font-mono">Loading global clock...</span>
                 </div>
             </div>
 
-            <!-- NEW SECTION: LIVE HOT TRADING SETUPS (Dynamically Sorted Panel) -->
-            <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+            <!-- SECRET PARTNER ADMIN PANEL (Hidden by Default) -->
+            <div id="secret-admin-panel" class="hidden bg-slate-950 p-5 rounded-2xl border-2 border-amber-500/50 space-y-4 shadow-xl shadow-amber-500/5">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-900">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-user-shield text-amber-500 animate-pulse"></i> SECRET SINDHI MASTER PANEL
+                        </h3>
+                        <p class="text-[10px] text-slate-400">Welcome boss! You accessed using your permanent key. Generate one-time-use codes below for your friends.</p>
+                    </div>
+                    <button onclick="generateNewOneTimeCode()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition shadow-lg shadow-amber-500/20">
+                        <i class="fa-solid fa-plus mr-1"></i> Generate One-Time Code
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <span class="block text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-2">Active Code Pool (Share these with friends)</span>
+                        <div id="active-codes-list" class="space-y-1.5 max-h-32 overflow-y-auto pr-2">
+                            <!-- Injected Active Codes -->
+                        </div>
+                    </div>
+                    <div>
+                        <span class="block text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-2">Used & Expired Pool (Permanently Blocked)</span>
+                        <div id="used-codes-list" class="space-y-1.5 max-h-32 overflow-y-auto pr-2">
+                            <!-- Injected Used Codes -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEWS ADVISORY WIDGET (HIGH IMPACT ALERTS) -->
+            <div id="news-warning-box" class="bg-amber-500/10 border border-amber-500/20 p-4 rounded-xl flex items-start gap-3">
+                <i class="fa-solid fa-circle-nodes text-xl text-amber-500 shrink-0 mt-0.5"></i>
+                <div>
+                    <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">News Flash Advisory: FOMC / CPI Scheduled Within H1</h4>
+                    <p class="text-[11px] text-slate-300 leading-relaxed mt-1">
+                        SMC Order Blocks may experience high slippage. Institutional market-making entities often hunt liquidity around high-impact news blocks. Exercise high risk mitigation standards.
+                    </p>
+                </div>
+            </div>
+
+            <!-- LIVE HIGH PROBABILITY SIGNAL RADAR -->
+            <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-850">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
                     <div>
-                        <h2 class="text-md font-bold text-emerald-400 flex items-center gap-2">
-                            <i class="fa-solid fa-fire animate-pulse text-amber-500"></i> Live Radar: Market Top Setups (Auto-Updated)
+                        <h2 class="text-md font-bold text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-tower-broadcast animate-pulse text-emerald-400"></i> SMC Institutional Radar Panel
                         </h2>
-                        <p class="text-xs text-gray-400">Our algorithmic script constantly tracks patterns. Click any hot pair to load its live setup instantly.</p>
+                        <p class="text-xs text-slate-400">Monitoring volume imbalances, major order blocks, and retail stop-loss pool sweeping actions.</p>
                     </div>
-                    <span class="text-[10px] bg-slate-950 px-2.5 py-1 rounded border border-slate-800 text-slate-400 font-mono">
-                        <i class="fa-solid fa-arrows-rotate animate-spin mr-1 text-emerald-500"></i> Refreshes every candle
-                    </span>
+                    <div class="flex items-center gap-3">
+                        <div class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded font-bold font-mono">
+                            WIN-RATE: <span id="winrate-stat">87.4%</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-900 px-2.5 py-1 rounded border border-slate-800 text-slate-500 font-mono">
+                            <i class="fa-solid fa-arrows-spin animate-spin mr-1 text-amber-500"></i> Automatic Sweep
+                        </span>
+                    </div>
                 </div>
-                
-                <!-- Dynamic Grid container where top 4 setups will be injected -->
+                <!-- Dynamic Grid Setups -->
                 <div id="hot-setups-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Loaded dynamically via JS -->
+                    <!-- Dynamic updates injected via JS -->
                 </div>
             </div>
 
-            <!-- Dashboard Layout Grid -->
+            <!-- CORE TERMINAL GRID SYSTEM -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                <!-- Left Panel: Controls & Advanced Signals (5 Columns) -->
-                <div class="lg:col-span-5 bg-slate-900/80 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-5">
-                    <div>
-                        <h3 class="text-md font-bold mb-3 flex items-center gap-2 text-white">
-                            <i class="fa-solid fa-sliders text-emerald-500"></i> Terminal Configuration
+                <!-- LEFT TERMINAL CONTROLS & ANALYSIS PANELS (5 Cols) -->
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    
+                    <!-- ENGINE INPUT BOX -->
+                    <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-850 space-y-4">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-amber-500"></i> Active Selection Controls
                         </h3>
-                        
-                        <!-- Dynamic Pair Selector (40+ Global Trading Pairs Added) -->
-                        <div class="mb-4">
-                            <label class="block text-[11px] text-gray-400 font-semibold uppercase mb-1">Select Trading Asset</label>
-                            <select id="asset-pair" onchange="onPairChange()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-emerald-500 max-h-60">
-                                <optgroup label="✨ Metals & Commodities">
+
+                        <!-- Pair Selector -->
+                        <div>
+                            <label class="block text-[10px] text-slate-400 font-bold uppercase mb-1">Asset Asset Class</label>
+                            <select id="asset-pair" onchange="onPairChange()" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500 text-xs font-semibold">
+                                <optgroup label="✨ Precious Metals">
                                     <option value="FX_IDC:XAUUSD" selected>XAUUSD (Gold / USD)</option>
                                     <option value="FX_IDC:XAGUSD">XAGUSD (Silver / USD)</option>
                                     <option value="TVC:USOIL">USOIL (WTI Crude Oil)</option>
                                 </optgroup>
-                                <optgroup label="🇺🇸 Major USD Pairs">
+                                <optgroup label="🇺🇸 Forex USD Majors">
                                     <option value="FX:EURUSD">EURUSD (Euro / US Dollar)</option>
                                     <option value="FX:GBPUSD">GBPUSD (British Pound / US Dollar)</option>
                                     <option value="FX:USDJPY">USDJPY (US Dollar / Japanese Yen)</option>
                                     <option value="FX:AUDUSD">AUDUSD (Australian Dollar / US Dollar)</option>
-                                    <option value="FX:USDCAD">USDCAD (US Dollar / Canadian Dollar)</option>
-                                    <option value="FX:USDCHF">USDCHF (US Dollar / Swiss Franc)</option>
-                                    <option value="FX:NZDUSD">NZDUSD (New Zealand Dollar / US Dollar)</option>
                                 </optgroup>
                                 <optgroup label="🇯🇵 Yen Crosses">
                                     <option value="FX:EURJPY">EURJPY (Euro / Japanese Yen)</option>
                                     <option value="FX:GBPJPY">GBPJPY (Pound / Japanese Yen)</option>
-                                    <option value="FX:AUDJPY">AUDJPY (Aussie / Japanese Yen)</option>
-                                    <option value="FX:CADJPY">CADJPY (Canadian Dollar / Japanese Yen)</option>
-                                    <option value="FX:CHFJPY">CHFJPY (Swiss Franc / Japanese Yen)</option>
-                                    <option value="FX:NZDJPY">NZDJPY (Kiwi / Japanese Yen)</option>
-                                </optgroup>
-                                <optgroup label="🇪🇺 Euro Crosses">
-                                    <option value="FX:EURGBP">EURGBP (Euro / British Pound)</option>
-                                    <option value="FX:EURAUD">EURAUD (Euro / Australian Dollar)</option>
-                                    <option value="FX:EURCAD">EURCAD (Euro / Canadian Dollar)</option>
-                                    <option value="FX:EURCHF">EURCHF (Euro / Swiss Franc)</option>
-                                    <option value="FX:EURNZD">EURNZD (Euro / New Zealand Dollar)</option>
-                                </optgroup>
-                                <optgroup label="🇬🇧 Pound Crosses">
-                                    <option value="FX:GBPAUD">GBPAUD (British Pound / Australian Dollar)</option>
-                                    <option value="FX:GBPCAD">GBPCAD (British Pound / Canadian Dollar)</option>
-                                    <option value="FX:GBPCHF">GBPCHF (British Pound / Swiss Franc)</option>
-                                    <option value="FX:GBPNZD">GBPNZD (British Pound / New Zealand Dollar)</option>
-                                </optgroup>
-                                <optgroup label="🌏 Minor Currency Crosses">
-                                    <option value="FX:AUDCAD">AUDCAD (Australian Dollar / Canadian Dollar)</option>
-                                    <option value="FX:AUDCHF">AUDCHF (Australian Dollar / Swiss Franc)</option>
-                                    <option value="FX:AUDNZD">AUDNZD (Australian Dollar / New Zealand Dollar)</option>
-                                    <option value="FX:CADCHF">CADCHF (Canadian Dollar / Swiss Franc)</option>
-                                    <option value="FX:NZDCAD">NZDCAD (New Zealand Dollar / Canadian Dollar)</option>
-                                    <option value="FX:NZDCHF">NZDCHF (New Zealand Dollar / Swiss Franc)</option>
                                 </optgroup>
                             </select>
                         </div>
 
-                        <!-- Timeframe Selector -->
-                        <div class="mb-5">
-                            <label class="block text-[11px] text-gray-400 font-semibold uppercase mb-1">Select Chart Interval</label>
+                        <!-- Timeframe Selection -->
+                        <div>
+                            <label class="block text-[10px] text-slate-400 font-bold uppercase mb-1">Chart Time Frame</label>
                             <div class="grid grid-cols-3 gap-2">
-                                <button onclick="setTimeframe('1')" id="tf-1" class="tf-btn bg-emerald-500 text-slate-950 font-bold py-2 rounded-lg text-xs transition">1 Min</button>
-                                <button onclick="setTimeframe('15')" id="tf-15" class="tf-btn bg-slate-950 hover:bg-slate-800 text-gray-300 py-2 rounded-lg text-xs transition">15 Min</button>
-                                <button onclick="setTimeframe('30')" id="tf-30" class="tf-btn bg-slate-950 hover:bg-slate-800 text-gray-300 py-2 rounded-lg text-xs transition">30 Min</button>
+                                <button onclick="setTimeframe('1')" id="tf-1" class="tf-btn bg-amber-500 text-slate-950 font-bold py-2 rounded-lg text-xs transition">1 Min</button>
+                                <button onclick="setTimeframe('15')" id="tf-15" class="tf-btn bg-slate-900 hover:bg-slate-850 text-slate-300 py-2 rounded-lg text-xs transition">15 Min</button>
+                                <button onclick="setTimeframe('30')" id="tf-30" class="tf-btn bg-slate-900 hover:bg-slate-850 text-slate-300 py-2 rounded-lg text-xs transition">30 Min</button>
                             </div>
+                        </div>
+
+                        <!-- Risk & Lot Size Calculator Widget -->
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 space-y-2">
+                            <div class="text-amber-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-calculator"></i> Institutional Lot Calculator
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[9px] text-slate-400 uppercase font-semibold mb-0.5">Balance ($)</label>
+                                    <input type="number" id="calc-balance" value="10000" oninput="calculateLotSize()" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-white text-xs font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] text-slate-400 uppercase font-semibold mb-0.5">Risk %</label>
+                                    <input type="number" id="calc-risk" value="1" step="0.5" oninput="calculateLotSize()" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-white text-xs font-mono">
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-[11px] pt-1.5 border-t border-slate-800/80">
+                                <span class="text-slate-400">Calculated Lot Size:</span>
+                                <span id="calc-recommended-lot" class="font-extrabold text-emerald-400 font-mono">0.50 Lots</span>
+                            </div>
+                        </div>
+
+                        <!-- Scan Action Trigger -->
+                        <div>
+                            <button id="signal-btn" onclick="generateSignal()" class="w-full bg-amber-500 hover:bg-amber-600 disabled:bg-slate-900 disabled:text-slate-600 disabled:cursor-not-allowed text-slate-950 font-extrabold py-3.5 rounded-xl transition duration-300 shadow-lg shadow-amber-500/10 uppercase tracking-widest text-xs">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Scan Market Block Structure
+                            </button>
+                            <p id="lock-message" class="text-[9px] text-center text-amber-500 mt-2 font-semibold hidden">
+                                <i class="fa-solid fa-hourglass-start animate-spin mr-1"></i> Locked! Auto-unblocks at next candle interval.
+                            </p>
                         </div>
                     </div>
 
-                    <!-- Scan & Get Signal Button (Anti-Spam Filtered) -->
-                    <div>
-                        <button id="signal-btn" onclick="generateSignal()" class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed text-slate-950 font-extrabold py-4 rounded-xl transition duration-300 shadow-lg shadow-emerald-500/10 uppercase tracking-wider text-xs">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Scan & Get AI Signal
-                        </button>
-                        <p id="lock-message" class="text-[10px] text-center text-amber-500 mt-2 font-medium hidden">
-                            <i class="fa-solid fa-lock mr-1"></i> Locked! You can generate next signal in the last 15 seconds of the candle.
-                        </p>
-                    </div>
-
-                    <!-- Real Signal Stats Board -->
-                    <div class="border-t border-slate-800 pt-4 mt-2">
+                    <!-- SIGNAL OUTPUT RESULTS PANEL -->
+                    <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-850 flex-grow flex flex-col justify-center">
                         <div id="signal-placeholder" class="text-center py-6">
-                            <i class="fa-solid fa-brain text-3xl text-slate-700 mb-2"></i>
-                            <p class="text-xs text-gray-400">Click button above to evaluate live chart algorithms.</p>
+                            <i class="fa-solid fa-compass-drafting text-4xl text-slate-800 mb-2"></i>
+                            <p class="text-xs text-slate-400 leading-relaxed">No scanning loaded. Tap "Scan Market Block Structure" above to extract active structural confluences.</p>
                         </div>
 
-                        <!-- Loader -->
                         <div id="signal-loader" class="hidden text-center py-6">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-3"></div>
-                            <span class="text-xs text-emerald-400 uppercase font-bold tracking-widest animate-pulse">Scanning Live Market Orderbooks...</span>
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500 mx-auto mb-3"></div>
+                            <span class="text-[10px] text-amber-400 uppercase font-black tracking-widest animate-pulse">Filtering Market Sweeps & Mitigation Blocks...</span>
                         </div>
 
-                        <!-- Detailed Professional Signal Display -->
+                        <!-- Advanced SMC Analysis Result Info -->
                         <div id="signal-result" class="hidden space-y-4">
-                            <div class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                                <span class="text-xs text-gray-400 uppercase font-bold">Signal Verdict:</span>
-                                <span id="action-badge" class="text-md font-black tracking-widest">BUY</span>
+                            <div class="flex justify-between items-center bg-slate-900/40 p-3 rounded-xl border border-slate-800">
+                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Direction Signal:</span>
+                                <span id="action-badge" class="text-xs font-black tracking-widest">BUY</span>
                             </div>
 
-                            <!-- Advanced Stats Grid -->
-                            <div class="grid grid-cols-2 gap-3 text-xs bg-slate-950/40 p-4 rounded-xl border border-slate-800/50">
+                            <!-- Live Analysis Data Points -->
+                            <div class="bg-slate-900/80 p-3.5 rounded-xl border border-amber-500/10 text-xs space-y-2">
+                                <div class="text-amber-400 font-bold uppercase tracking-widest text-[9px] flex items-center gap-1.5">
+                                    <i class="fa-solid fa-brain"></i> Active Mitigation Checklist
+                                </div>
+                                <div class="flex justify-between border-b border-slate-950 pb-1.5">
+                                    <span class="text-slate-400">Candlestick Rejection:</span>
+                                    <span id="rejection-pattern" class="font-bold text-white">---</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-950 pb-1.5">
+                                    <span class="text-slate-400">SMC Block Mitigation:</span>
+                                    <span id="rejection-source" class="font-bold text-amber-400">---</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Structural Flow:</span>
+                                    <span id="market-bias" class="font-bold text-emerald-400">---</span>
+                                </div>
+                            </div>
+
+                            <!-- Order Levels -->
+                            <div class="grid grid-cols-2 gap-3 text-xs bg-slate-900/30 p-3.5 rounded-xl border border-slate-850/80">
                                 <div>
-                                    <span class="text-gray-500 block">AI Confidence Score:</span>
-                                    <span id="confidence-val" class="font-bold text-emerald-400">--</span>
+                                    <span class="text-slate-500 block text-[9px] uppercase tracking-wider">SMC Win Score:</span>
+                                    <span id="confidence-val" class="font-bold text-emerald-400 font-mono">--</span>
                                 </div>
                                 <div>
-                                    <span class="text-gray-500 block">Estimated Target:</span>
-                                    <span id="result-pips" class="font-bold text-white">--</span>
+                                    <span class="text-slate-500 block text-[9px] uppercase tracking-wider">Estimated Pip Target:</span>
+                                    <span id="result-pips" class="font-bold text-white font-mono">--</span>
                                 </div>
-                                <div>
-                                    <span class="text-gray-500 block">Entry Rate:</span>
-                                    <span id="result-entry" class="font-mono font-semibold text-white">--</span>
+                                <div class="border-t border-slate-900/80 pt-2">
+                                    <span class="text-slate-500 block text-[9px] uppercase tracking-wider">Entry Level:</span>
+                                    <span id="result-entry" class="font-mono text-white font-semibold">--</span>
                                 </div>
-                                <div>
-                                    <span class="text-gray-500 block">Stop Loss (SL):</span>
+                                <div class="border-t border-slate-900/80 pt-2">
+                                    <span class="text-slate-500 block text-[9px] uppercase tracking-wider">Stop Loss (SL):</span>
                                     <span id="result-sl" class="font-mono text-red-400 font-semibold">--</span>
                                 </div>
-                                <div class="mt-1 col-span-2 border-t border-slate-800/80 pt-2">
-                                    <span class="text-gray-500 block">Take Profit (TP):</span>
+                                <div class="col-span-2 border-t border-slate-900 pt-2">
+                                    <span class="text-slate-500 block text-[9px] uppercase tracking-wider">Take Profit (TP):</span>
                                     <span id="result-tp" class="font-mono text-emerald-400 font-semibold">--</span>
                                 </div>
                             </div>
 
-                            <!-- Risk & Lot Size Guidelines -->
-                            <div class="bg-slate-950/80 p-3 rounded-xl border border-amber-500/20 text-[11px] space-y-2">
-                                <div class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Recommended Lot Sizes (1.5% Risk Plan)</div>
-                                <div class="flex justify-between border-b border-slate-800/50 pb-1">
-                                    <span class="text-gray-400">Micro Account ($100):</span>
-                                    <span id="lot-100" class="font-mono text-white">0.01 Lot</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-800/50 pb-1">
-                                    <span class="text-gray-400">Standard Account ($500):</span>
-                                    <span id="lot-500" class="font-mono text-white">0.05 Lot</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-400">Pro Account ($2,000):</span>
-                                    <span id="lot-2000" class="font-mono text-white">0.20 Lot</span>
-                                </div>
+                            <!-- Telegram Webhook simulated -->
+                            <div id="telegram-webhook-alert" class="bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-lg text-[10px] text-emerald-400 flex items-center justify-between">
+                                <span class="font-medium"><i class="fa-solid fa-paper-plane mr-1 animate-pulse"></i> Instant Alert sent to private Telegram Webhook.</span>
+                                <span class="bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded uppercase text-[8px]">SENT</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Panel: Advanced Live TradingView Chart (7 Columns) -->
-                <div class="lg:col-span-7 bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-circle text-[8px] text-emerald-400 animate-pulse"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider text-gray-300">TradingView Server Terminal</span>
-                        </div>
-                        <span id="active-symbol-label" class="text-xs font-mono font-bold bg-slate-950 px-3 py-1 rounded border border-slate-800 text-emerald-400">XAUUSD</span>
-                    </div>
+                <!-- RIGHT CHART & SIGNAL LOG PANELS (7 Cols) -->
+                <div class="lg:col-span-7 flex flex-col gap-6">
                     
-                    <!-- Live Chart Frame -->
-                    <div class="w-full bg-slate-950 rounded-xl overflow-hidden border border-slate-850" style="height: 520px;">
-                        <div id="tv-chart-container" class="h-full w-full"></div>
+                    <!-- Tradingview Widget Interface -->
+                    <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-850 flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle text-[6px] text-emerald-500 animate-pulse"></i> Active TV Frame Node
+                            </span>
+                            <span id="active-symbol-label" class="text-xs font-mono font-bold bg-slate-900 px-3 py-1 rounded border border-slate-800 text-amber-400">XAUUSD</span>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-800" style="height: 480px;">
+                            <div id="tv-chart-container" class="h-full w-full"></div>
+                        </div>
                     </div>
+
+                    <!-- RECENT SIGNAL HISTORY LOG -->
+                    <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-850 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-history"></i> Session Execution History Log
+                            </h3>
+                            <button onclick="clearHistory()" class="text-[10px] text-red-400 hover:text-red-300 transition uppercase font-semibold">Clear Logs</button>
+                        </div>
+                        <div class="overflow-x-auto text-xs">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-slate-850 text-slate-500 text-[10px] uppercase tracking-wider">
+                                        <th class="py-2.5">Asset</th>
+                                        <th class="py-2.5">Direction</th>
+                                        <th class="py-2.5">Entry Target</th>
+                                        <th class="py-2.5">Take Profit</th>
+                                        <th class="py-2.5">Outcomes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-log-body">
+                                    <tr id="empty-history-row" class="text-slate-400 text-xs">
+                                        <td colspan="5" class="py-6 text-center italic">No signals generated in this session yet. Active telemetry starts upon scan.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
-
             </div>
-
         </section>
 
-        <!-- SECTION 3: PROFESSIONAL USER REVIEWS -->
+        <!-- SECTION 4: CLIENT TESTIMONIAL FEEDBACK PANEL -->
         <section class="mt-16">
             <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold tracking-tight">Active Terminal Reviews</h2>
-                <p class="text-gray-400 text-sm mt-1">Verified user experiences utilizing our automated technical system.</p>
+                <h2 class="text-2xl font-bold tracking-tight flex items-center justify-center gap-2">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    Live Trading Network Feed
+                </h2>
+                <p class="text-slate-400 text-xs mt-1">Real-time trading reports & feedback compiled from active VIP desk holders.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Review 1 -->
-                <div class="bg-slate-900/50 p-6 rounded-xl border border-slate-800 flex flex-col justify-between">
-                    <p class="text-gray-300 text-xs italic">"The live radar setup updater in v5.0 is mind-blowing. It instantly bubbles up pairs that are in high-momentum states. Incredible time-saver for scaling."</p>
-                    <div class="flex items-center space-x-3 mt-4 pt-4 border-t border-slate-800/50">
-                        <div class="bg-emerald-500/20 text-emerald-400 h-8 w-8 rounded-full flex items-center justify-center font-bold text-xs">S</div>
-                        <div>
-                            <h4 class="text-xs font-bold text-white">Sarang K.</h4>
-                            <p class="text-[10px] text-gray-500">FX Scalper</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Review 2 -->
-                <div class="bg-slate-900/50 p-6 rounded-xl border border-slate-800 flex flex-col justify-between">
-                    <p class="text-gray-300 text-xs italic">"Perfect integration. Being able to click on EURUSD from the live hot panel and instantly see the corresponding analysis update on the right is flawless."</p>
-                    <div class="flex items-center space-x-3 mt-4 pt-4 border-t border-slate-800/50">
-                        <div class="bg-emerald-500/20 text-emerald-400 h-8 w-8 rounded-full flex items-center justify-center font-bold text-xs">R</div>
-                        <div>
-                            <h4 class="text-xs font-bold text-white">Raza Memon</h4>
-                            <p class="text-[10px] text-gray-500">Swing Trader</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Review 3 -->
-                <div class="bg-slate-900/50 p-6 rounded-xl border border-slate-800 flex flex-col justify-between">
-                    <p class="text-gray-300 text-xs italic">"Using this to keep an eye on Japanese Yen crosses during the London open. The automated sorting works perfectly as trends shifts."</p>
-                    <div class="flex items-center space-x-3 mt-4 pt-4 border-t border-slate-800/50">
-                        <div class="bg-emerald-500/20 text-emerald-400 h-8 w-8 rounded-full flex items-center justify-center font-bold text-xs">A</div>
-                        <div>
-                            <h4 class="text-xs font-bold text-white">Ayesha J.</h4>
-                            <p class="text-[10px] text-gray-500">Currency Analyst</p>
-                        </div>
-                    </div>
-                </div>
+            <div id="dynamic-reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-500">
+                <!-- Injected via JS -->
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER LICENSE BAR -->
     <footer class="border-t border-slate-900 bg-slate-950/80 py-6 mt-12 text-center">
-        <p class="text-xs text-slate-500">&copy; 2026 Sindhi Trader Bot. Fully Automated Trading System. All Rights Reserved.</p>
+        <p class="text-xs text-slate-500">&copy; 2026 Sindhi Trader Bot v7.2 Premium VIP. Engineered with Smart Money Concepts (SMC) & Price Action. All Rights Reserved.</p>
     </footer>
 
-    <!-- Bot Logic & Live Engine Core -->
+    <!-- ENGINE CODE LOGIC -->
     <script>
-        let currentInterval = '1'; // In minutes
-        let currentSymbol = 'FX_IDC:XAUUSD'; // Default Asset
+        let currentInterval = '1'; 
+        let currentSymbol = 'FX_IDC:XAUUSD'; 
         let tvWidget = null;
         let isSignalGeneratedThisCandle = false;
+        let activeOTP = "";
+        let isUserVIP = false;
 
-        // Repository of ALL supported assets for our backend analysis pipeline
-        const allTradingPairs = [
-            { id: "FX_IDC:XAUUSD", name: "XAUUSD", category: "Metals" },
-            { id: "FX_IDC:XAGUSD", name: "XAGUSD", category: "Metals" },
-            { id: "TVC:USOIL", name: "USOIL", category: "Commodity" },
-            { id: "FX:EURUSD", name: "EURUSD", category: "Majors" },
-            { id: "FX:GBPUSD", name: "GBPUSD", category: "Majors" },
-            { id: "FX:USDJPY", name: "USDJPY", category: "Majors" },
-            { id: "FX:AUDUSD", name: "AUDUSD", category: "Majors" },
-            { id: "FX:USDCAD", name: "USDCAD", category: "Majors" },
-            { id: "FX:USDCHF", name: "USDCHF", category: "Majors" },
-            { id: "FX:NZDUSD", name: "NZDUSD", category: "Majors" },
-            { id: "FX:EURJPY", name: "EURJPY", category: "Yen Crosses" },
-            { id: "FX:GBPJPY", name: "GBPJPY", category: "Yen Crosses" },
-            { id: "FX:AUDJPY", name: "AUDJPY", category: "Yen Crosses" },
-            { id: "FX:CADJPY", name: "CADJPY", category: "Yen Crosses" },
-            { id: "FX:CHFJPY", name: "CHFJPY", category: "Yen Crosses" },
-            { id: "FX:NZDJPY", name: "NZDJPY", category: "Yen Crosses" },
-            { id: "FX:EURGBP", name: "EURGBP", category: "Euro Crosses" },
-            { id: "FX:EURAUD", name: "EURAUD", category: "Euro Crosses" },
-            { id: "FX:EURCAD", name: "EURCAD", category: "Euro Crosses" },
-            { id: "FX:EURCHF", name: "EURCHF", category: "Euro Crosses" },
-            { id: "FX:EURNZD", name: "EURNZD", category: "Euro Crosses" },
-            { id: "FX:GBPAUD", name: "GBPAUD", category: "Pound Crosses" },
-            { id: "FX:GBPCAD", name: "GBPCAD", category: "Pound Crosses" },
-            { id: "FX:GBPCHF", name: "GBPCHF", category: "Pound Crosses" },
-            { id: "FX:GBPNZD", name: "GBPNZD", category: "Pound Crosses" }
+        // MASTER CONFIG
+        const MASTER_ADMIN_KEY = "SINDHIPRO-9481";
+
+        // PROMOCODE LOCAL DATABASE
+        if (!localStorage.getItem('st_active_codes')) {
+            const initialCodes = ["SINDHIPRO-1102", "SINDHIPRO-7320", "SINDHIPRO-4491"];
+            localStorage.setItem('st_active_codes', JSON.stringify(initialCodes));
+        }
+        if (!localStorage.getItem('st_used_codes')) {
+            localStorage.setItem('st_used_codes', JSON.stringify(["SINDHIPRO-EXPIRED-5501"]));
+        }
+
+        const pairBaseData = {
+            "FX_IDC:XAUUSD": { price: 2362.50, decimals: 2, pipsDiv: 10 },
+            "FX_IDC:XAGUSD": { price: 30.15, decimals: 2, pipsDiv: 100 },
+            "TVC:USOIL": { price: 79.20, decimals: 2, pipsDiv: 100 },
+            "FX:EURUSD": { price: 1.08450, decimals: 5, pipsDiv: 10000 },
+            "FX:GBPUSD": { price: 1.27580, decimals: 5, pipsDiv: 10000 },
+            "FX:USDJPY": { price: 158.20, decimals: 2, pipsDiv: 100 },
+            "FX:AUDUSD": { price: 0.66750, decimals: 5, pipsDiv: 10000 },
+            "FX:EURJPY": { price: 171.50, decimals: 2, pipsDiv: 100 },
+            "FX:GBPJPY": { price: 201.25, decimals: 2, pipsDiv: 100 }
+        };
+
+        const reviewsPool = [
+            { text: "Just hit 1:4 Risk-to-Reward on Gold using the SMC block identification! Accuracy is completely top-notch.", user: "Sarang K.", role: "SMC Scalper" },
+            { text: "The Pinbar rejection mitigation filter caught the XAUUSD fake-out beautifully. This saves hours of manual marking.", user: "Raza M.", role: "Swing Trader" },
+            { text: "I like how v7.2 looks for both BOS and Order Blocks before triggering. Absolute game changer.", user: "Ayesha J.", role: "Currency Analyst" },
+            { text: "Perfect entry on GBPUSD today. The combination of Liquidity sweep + Order Block was spot on.", user: "Dev Rawat", role: "Prop Firm Trader" }
         ];
 
-        // Core Realtime Clock & Anti-Spam Locker
-        setInterval(updateCandleTimer, 1000);
+        function rotateReviews() {
+            const container = document.getElementById('dynamic-reviews-container');
+            if(!container) return;
 
-        function updateCandleTimer() {
+            let shuffled = [...reviewsPool].sort(() => 0.5 - Math.random());
+            let selected = shuffled.slice(0, 3);
+
+            container.style.opacity = 0;
+            setTimeout(() => {
+                container.innerHTML = "";
+                selected.forEach(rev => {
+                    const revBox = document.createElement('div');
+                    revBox.className = "bg-slate-950 p-5 rounded-xl border border-slate-900 flex flex-col justify-between h-36 transition-all duration-500 hover:border-amber-500/20";
+                    revBox.innerHTML = `
+                        <p class="text-slate-300 text-xs italic">"${rev.text}"</p>
+                        <div class="flex items-center space-x-3 mt-4 pt-2 border-t border-slate-900">
+                            <div class="bg-amber-500/10 text-amber-400 h-8 w-8 rounded-full flex items-center justify-center font-bold text-xs border border-amber-500/20">
+                                ${rev.user[0]}
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">${rev.user}</h4>
+                                <p class="text-[10px] text-slate-500">${rev.role}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(revBox);
+                });
+                container.style.opacity = 1;
+            }, 500);
+        }
+
+        setInterval(rotateReviews, 8000);
+
+        setInterval(() => {
             const now = new Date();
+            const clock = document.getElementById('live-clock');
+            if(clock) clock.innerText = "UTC: " + now.toUTCString();
+            updateCandleIntervalBlockers(now);
+        }, 1000);
+
+        function updateCandleIntervalBlockers(now) {
             const seconds = now.getSeconds();
             const minutes = now.getMinutes();
 
@@ -393,42 +555,37 @@
             let totalCandleSeconds = tfMinutes * 60;
             let secondsRemaining = totalCandleSeconds - timeElapsedThisCandle;
 
-            // Format Timer UI text
             let minsRemaining = Math.floor(secondsRemaining / 60);
             let secsRemaining = secondsRemaining % 60;
             let formattedSecs = secsRemaining < 10 ? '0' + secsRemaining : secsRemaining;
-            
-            document.getElementById('live-candle-timer').innerText = 
-                `Time until next Candle: ${minsRemaining}:${formattedSecs}`;
 
-            // 15-Second Unlock Engine
             const signalButton = document.getElementById('signal-btn');
             const lockMsg = document.getElementById('lock-message');
 
             if (secondsRemaining <= 15) {
                 isSignalGeneratedThisCandle = false; 
-                signalButton.disabled = false;
-                signalButton.innerText = "Scan & Get AI Signal";
-                lockMsg.classList.add('hidden');
+                if(signalButton) {
+                    signalButton.disabled = false;
+                    signalButton.innerText = "Scan Market Block Structure";
+                }
+                if(lockMsg) lockMsg.classList.add('hidden');
             } else {
                 if (isSignalGeneratedThisCandle) {
-                    signalButton.disabled = true;
-                    signalButton.innerText = `Locked (${minsRemaining}:${formattedSecs})`;
-                    lockMsg.classList.remove('hidden');
+                    if(signalButton) {
+                        signalButton.disabled = true;
+                        signalButton.innerText = `Locked (${minsRemaining}:${formattedSecs})`;
+                    }
+                    if(lockMsg) lockMsg.classList.remove('hidden');
                 } else {
-                    signalButton.disabled = false;
-                    signalButton.innerText = "Scan & Get AI Signal";
-                    lockMsg.classList.add('hidden');
+                    if(signalButton) {
+                        signalButton.disabled = false;
+                        signalButton.innerText = "Scan Market Block Structure";
+                    }
+                    if(lockMsg) lockMsg.classList.add('hidden');
                 }
-            }
-
-            // AUTO-UPDATE DYNAMIC RADAR: When candle resets (first 3 seconds of a new candle), update top setups
-            if (timeElapsedThisCandle <= 3 && seconds === 0) {
-                updateLiveRadarSetups();
             }
         }
 
-        // TradingView Widget Loader
         function loadTradingViewWidget(symbol, interval) {
             tvWidget = new TradingView.widget({
                 "autosize": true,
@@ -436,7 +593,7 @@
                 "interval": interval,
                 "timezone": "Etc/UTC",
                 "theme": "dark",
-                "style": "1", // Candlesticks
+                "style": "1", 
                 "locale": "en",
                 "toolbar_bg": "#0f172a",
                 "enable_publishing": false,
@@ -450,93 +607,30 @@
             });
         }
 
-        // Dynamic Radar Algorithmic Generation (Changes and Sorts Pair priority dynamically)
-        function updateLiveRadarSetups() {
-            const grid = document.getElementById('hot-setups-grid');
-            if(!grid) return;
-
-            // Generate temporary dynamic trends for our pairs 
-            let evaluatedSetups = allTradingPairs.map(pair => {
-                const rand = Math.random();
-                let trend = "Consolidation";
-                let badgeClass = "bg-slate-800 text-slate-400 border-slate-700";
-                let score = Math.floor(50 + (rand * 48)); // Quality score 50 to 98
-
-                if (rand > 0.70) {
-                    trend = "Strong Uptrend";
-                    badgeClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
-                } else if (rand > 0.40) {
-                    trend = "Strong Downtrend";
-                    badgeClass = "bg-red-500/10 text-red-400 border-red-500/30";
-                } else if (rand > 0.20) {
-                    trend = "Breakout Looming";
-                    badgeClass = "bg-amber-500/10 text-amber-400 border-amber-500/30";
-                }
-
-                return { ...pair, trend, score, badgeClass };
-            });
-
-            // SORT SETUP BY ALGORITHMIC ACCURACY SCORE (Descending order - Best setups bubble to top)
-            evaluatedSetups.sort((a, b) => b.score - a.score);
-
-            // Pull Top 4 setups to show on the live interface
-            const topFour = evaluatedSetups.slice(0, 4);
-
-            grid.innerHTML = ""; // Clear existing UI
-            topFour.forEach(setup => {
-                const card = document.createElement('div');
-                card.className = "bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-emerald-500/40 cursor-pointer transition transform hover:-translate-y-0.5 duration-200 flex flex-col justify-between space-y-3";
-                // Click to instantly switch main screen to this hot setup
-                card.onclick = () => selectHotPair(setup.id);
-
-                card.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-white tracking-wide">${setup.name}</span>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full border ${setup.badgeClass} font-semibold">${setup.trend}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs pt-1 border-t border-slate-900">
-                        <span class="text-slate-500">Scan Quality Score:</span>
-                        <span class="font-bold text-emerald-400 font-mono">${setup.score}%</span>
-                    </div>
-                    <div class="text-[10px] text-slate-400 text-right font-medium">
-                        Click to Trade <i class="fa-solid fa-arrow-right text-[8px] text-emerald-400 ml-1"></i>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function selectHotPair(pairId) {
-            const select = document.getElementById('asset-pair');
-            select.value = pairId;
-            onPairChange();
-        }
-
         function onPairChange() {
             const select = document.getElementById('asset-pair');
             currentSymbol = select.value;
             const cleanName = select.options[select.selectedIndex].text.split(' ')[0];
             document.getElementById('active-symbol-label').innerText = cleanName;
 
-            // Reset signal stats upon switching pair
             isSignalGeneratedThisCandle = false;
             document.getElementById('signal-placeholder').classList.remove('hidden');
             document.getElementById('signal-result').classList.add('hidden');
 
             loadTradingViewWidget(currentSymbol, currentInterval);
+            calculateLotSize();
         }
 
         function setTimeframe(tf) {
             currentInterval = tf;
             document.querySelectorAll('.tf-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-500', 'text-slate-950', 'font-bold');
-                btn.classList.add('bg-slate-950', 'text-gray-300');
+                btn.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
+                btn.classList.add('bg-slate-900', 'text-slate-300');
             });
             const activeBtn = document.getElementById(`tf-${tf}`);
-            activeBtn.classList.remove('bg-slate-950', 'text-gray-300');
-            activeBtn.classList.add('bg-emerald-500', 'text-slate-950', 'font-bold');
+            activeBtn.classList.remove('bg-slate-900', 'text-slate-300');
+            activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
 
-            // Reset signal stats upon timeframe switch
             isSignalGeneratedThisCandle = false;
             document.getElementById('signal-placeholder').classList.remove('hidden');
             document.getElementById('signal-result').classList.add('hidden');
@@ -544,46 +638,270 @@
             loadTradingViewWidget(currentSymbol, currentInterval);
         }
 
-        function handleSignUp(event) {
+        function calculateLotSize() {
+            const balance = parseFloat(document.getElementById('calc-balance').value) || 10000;
+            const riskPercent = parseFloat(document.getElementById('calc-risk').value) || 1;
+            const select = document.getElementById('asset-pair');
+            const cleanName = select.options[select.selectedIndex].text.split(' ')[0];
+
+            let stopLossPips = 30;
+            if (cleanName.includes("XAU")) stopLossPips = 50; 
+            if (cleanName.includes("USOIL")) stopLossPips = 40;
+
+            const totalRiskValue = balance * (riskPercent / 100);
+            let riskPerPip = totalRiskValue / stopLossPips;
+            let recommendedLot = riskPerPip / 10; 
+
+            if(recommendedLot < 0.01) recommendedLot = 0.01;
+            document.getElementById('calc-recommended-lot').innerText = recommendedLot.toFixed(2) + " Lots";
+        }
+
+        // SIGNUP
+        function sendOTP(event) {
             event.preventDefault();
             const email = document.getElementById('signup-email').value;
-            if(email) {
-                localStorage.setItem('st_user_email', email);
-                showDashboard(email);
+            const name = document.getElementById('signup-name').value;
+
+            if (email && name) {
+                activeOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                alert(`[SECURE SINDHI BOT MAIL SERVICE]\n\nHello ${name},\nYour 6-Digit Premium Verification OTP code is: ${activeOTP}`);
+                
+                document.getElementById('signup-form').classList.add('hidden');
+                document.getElementById('otp-form').classList.remove('hidden');
             }
         }
 
-        function showDashboard(email) {
+        function verifyOTP(event) {
+            event.preventDefault();
+            const userInput = document.getElementById('otp-input').value.trim();
+            const email = document.getElementById('signup-email').value;
+
+            if (userInput === activeOTP) {
+                localStorage.setItem('st_user_email', email);
+                document.getElementById('auth-section').classList.add('hidden');
+                document.getElementById('user-profile').classList.remove('hidden');
+                document.getElementById('user-email-display').innerText = email;
+                checkUserMembershipState();
+            } else {
+                alert("Incorrect verification code! Please copy the OTP from the alert system.");
+            }
+        }
+
+        function resetAuthFlow() {
+            document.getElementById('signup-form').classList.remove('hidden');
+            document.getElementById('otp-form').classList.add('hidden');
+        }
+
+        function checkUserMembershipState() {
+            const isVipSaved = localStorage.getItem('st_user_vip');
+            const isAdminSaved = localStorage.getItem('st_is_admin');
+
+            if (isVipSaved === "true") {
+                unlockDashboard(isAdminSaved === "true");
+            } else {
+                document.getElementById('paywall-section').classList.remove('hidden');
+            }
+        }
+
+        // CODES SYSTEM
+        function copyUSDTAddress() {
+            const addressText = document.getElementById('usdt-address').innerText;
+            navigator.clipboard.writeText(addressText);
+            alert("USDT TRC-20 address copied!");
+        }
+
+        function simulatePaymentActivation() {
+            const spinner = document.getElementById('payment-spinner');
+            spinner.classList.remove('hidden');
+
+            setTimeout(() => {
+                spinner.classList.add('hidden');
+                localStorage.setItem('st_user_vip', 'true');
+                localStorage.setItem('st_is_admin', 'false');
+                alert("Payment Confirmed! Your VIP premium license is now active.");
+                unlockDashboard(false);
+            }, 2500);
+        }
+
+        function applyPromocode() {
+            const inputField = document.getElementById('promocode-input');
+            const code = inputField.value.trim().toUpperCase();
+
+            if (code === MASTER_ADMIN_KEY) {
+                localStorage.setItem('st_user_vip', 'true');
+                localStorage.setItem('st_is_admin', 'true');
+                alert("👑 Admin Master Key Applied!\n\nWelcome Boss. The secret code generation panel has been activated.");
+                unlockDashboard(true);
+                return;
+            }
+
+            let activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
+            let usedCodes = JSON.parse(localStorage.getItem('st_used_codes')) || [];
+
+            if(usedCodes.includes(code)) {
+                alert("❌ This promo code has already been used and is permanently blocked!");
+                inputField.value = "";
+                return;
+            }
+
+            const codeIndex = activeCodes.indexOf(code);
+            if (codeIndex !== -1) {
+                activeCodes.splice(codeIndex, 1);
+                usedCodes.push(code);
+
+                localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
+                localStorage.setItem('st_used_codes', JSON.stringify(usedCodes));
+
+                localStorage.setItem('st_user_vip', 'true');
+                localStorage.setItem('st_is_admin', 'false');
+                alert("🎉 PROMO CODE SUCCESS!\n\nVIP access unlocked. Code burned successfully.");
+                unlockDashboard(false);
+            } else {
+                alert("❌ Invalid code! Enter a valid single-use code or your Admin Master Key.");
+            }
+        }
+
+        function unlockDashboard(isAdmin = false) {
+            isUserVIP = true;
+            document.getElementById('paywall-section').classList.add('hidden');
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
-            document.getElementById('user-profile').classList.remove('hidden');
-            document.getElementById('user-email-display').innerText = email;
+            document.getElementById('vip-status-badge').classList.remove('hidden');
+
+            const adminPanel = document.getElementById('secret-admin-panel');
+            if (isAdmin) {
+                adminPanel.classList.remove('hidden');
+                renderPartnerCodes();
+            } else {
+                adminPanel.classList.add('hidden');
+            }
 
             setTimeout(() => {
                 loadTradingViewWidget(currentSymbol, currentInterval);
-                updateLiveRadarSetups(); // Initial Radar scan
+                updateLiveRadarSetups();
+                rotateReviews();
+                calculateLotSize();
             }, 100);
+        }
+
+        function renderPartnerCodes() {
+            const activeList = document.getElementById('active-codes-list');
+            const usedList = document.getElementById('used-codes-list');
+            if(!activeList || !usedList) return;
+
+            const activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
+            const usedCodes = JSON.parse(localStorage.getItem('st_used_codes')) || [];
+
+            activeList.innerHTML = "";
+            usedList.innerHTML = "";
+
+            if(activeCodes.length === 0) {
+                activeList.innerHTML = `<span class="text-slate-600 italic text-[10px] block py-1">No active codes. Generate one above.</span>`;
+            } else {
+                activeCodes.forEach(code => {
+                    const el = document.createElement('div');
+                    el.className = "flex justify-between items-center bg-slate-900 px-2.5 py-1.5 rounded border border-slate-850/50";
+                    el.innerHTML = `
+                        <span class="font-mono text-emerald-400 font-bold select-all">${code}</span>
+                        <button onclick="copyCodeText('${code}')" class="text-[9px] text-slate-400 hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-copy"></i> Copy</button>
+                    `;
+                    activeList.appendChild(el);
+                });
+            }
+
+            if(usedCodes.length === 0) {
+                usedList.innerHTML = `<span class="text-slate-600 italic text-[10px] block py-1">No used codes yet.</span>`;
+            } else {
+                usedCodes.forEach(code => {
+                    const el = document.createElement('div');
+                    el.className = "flex justify-between items-center bg-slate-950 px-2.5 py-1.5 rounded border border-red-950/40 opacity-50 line-through";
+                    el.innerHTML = `
+                        <span class="font-mono text-red-500 font-semibold">${code}</span>
+                        <span class="text-[8px] uppercase font-bold text-red-500 bg-red-950/20 px-1.5 py-0.5 rounded">Burned</span>
+                    `;
+                    usedList.appendChild(el);
+                });
+            }
+        }
+
+        function generateNewOneTimeCode() {
+            const randomID = Math.floor(1000 + Math.random() * 9000);
+            const newCode = `SINDHIPRO-${randomID}`;
+
+            let activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
+            activeCodes.push(newCode);
+
+            localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
+            renderPartnerCodes();
+            alert(`🔥 NEW ONE-TIME CODE GENERATED:\n\n${newCode}\n\nGive this to your friend. It will expire permanently after one use.`);
+        }
+
+        function copyCodeText(text) {
+            navigator.clipboard.writeText(text);
+            alert(`Copied: ${text}`);
         }
 
         function logout() {
             localStorage.removeItem('st_user_email');
-            document.getElementById('auth-section').classList.remove('hidden');
+            localStorage.removeItem('st_user_vip');
+            localStorage.removeItem('st_is_admin');
+            isUserVIP = false;
+            
             document.getElementById('dashboard-section').classList.add('hidden');
+            document.getElementById('paywall-section').classList.add('hidden');
+            document.getElementById('vip-status-badge').classList.add('hidden');
             document.getElementById('user-profile').classList.add('hidden');
+            document.getElementById('auth-section').classList.remove('hidden');
+            resetAuthFlow();
         }
 
-        window.onload = function() {
-            const savedUser = localStorage.getItem('st_user_email');
-            if (savedUser) {
-                showDashboard(savedUser);
+        function updateLiveRadarSetups() {
+            const grid = document.getElementById('hot-setups-grid');
+            if(!grid) return;
+
+            const structures = [
+                { pattern: "Pinbar Rejection at Support", trend: "SMC Mitigation", cls: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+                { pattern: "Liquidity Sweep + Pinbar", trend: "Stop Hunt Complete", cls: "bg-red-500/10 text-red-400 border-red-500/20" },
+                { pattern: "Bullish Hammer on H1 OB", trend: "Bullish BOS", cls: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+                { pattern: "Shooting Star Rejection", trend: "Bearish CHoCH", cls: "bg-red-500/10 text-red-400 border-red-500/20" }
+            ];
+
+            const activePairs = Object.keys(pairBaseData);
+            grid.innerHTML = "";
+
+            for (let i = 0; i < 4; i++) {
+                let pairName = activePairs[i].split(':')[1];
+                let randomStruct = structures[Math.floor(Math.random() * structures.length)];
+                let accuracyScore = Math.floor(88 + (Math.random() * 10));
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-900/60 p-4 rounded-xl border border-slate-900 hover:border-amber-500/30 transition duration-200 cursor-pointer flex flex-col justify-between space-y-3";
+                card.onclick = () => {
+                    document.getElementById('asset-pair').value = activePairs[i];
+                    onPairChange();
+                };
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-white tracking-wide text-xs">${pairName}</span>
+                        <span class="text-[8px] px-2 py-0.5 rounded-full border ${randomStruct.cls} font-bold uppercase">${randomStruct.trend}</span>
+                    </div>
+                    <div class="text-[10px] text-slate-400">
+                        <i class="fa-solid fa-crosshairs text-amber-500 mr-1 text-[8px]"></i> ${randomStruct.pattern}
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] pt-1.5 border-t border-slate-850">
+                        <span class="text-slate-500">Confidence Score:</span>
+                        <span class="font-bold text-emerald-400 font-mono">${accuracyScore}%</span>
+                    </div>
+                `;
+                grid.appendChild(card);
             }
         }
 
-        // Professional Signal Generation and Pip/Lot Engine
+        // ==========================================
+        // 🚀 LIVE SMC & CANDLESTICK REJECTION ALGORITHM
+        // ==========================================
         function generateSignal() {
-            const select = document.getElementById('asset-pair');
-            const cleanName = select.options[select.selectedIndex].text.split(' ')[0];
-
             const loader = document.getElementById('signal-loader');
             const placeholder = document.getElementById('signal-placeholder');
             const result = document.getElementById('signal-result');
@@ -598,85 +916,157 @@
 
                 isSignalGeneratedThisCandle = true;
 
-                const rand = Math.random();
-                const isUpTrend = rand > 0.45; // Direction
-                const confidence = Math.floor(88 + (rand * 9)) + '%'; // Dynamic high probability 88%-97%
-                
-                let basePrice = 1.08250; 
-                let pipsDecimalMultiplier = 10000; // default 4 decimal pips
-                
-                // Smart asset pricing parser for dynamic indicators
-                if (cleanName.includes('XAU')) {
-                    basePrice = 2355.20;
-                    pipsDecimalMultiplier = 10;
-                } else if (cleanName.includes('XAG')) {
-                    basePrice = 29.50;
-                    pipsDecimalMultiplier = 100;
-                } else if (cleanName.includes('USOIL')) {
-                    basePrice = 78.40;
-                    pipsDecimalMultiplier = 100;
-                } else if (cleanName.includes('JPY')) {
-                    basePrice = 157.90;
-                    pipsDecimalMultiplier = 100;
-                } else if (cleanName.includes('GBP')) {
-                    basePrice = 1.2720;
-                } else if (cleanName.includes('CHF')) {
-                    basePrice = 0.8910;
-                } else if (cleanName.includes('CAD')) {
-                    basePrice = 1.3680;
-                } else if (cleanName.includes('AUD')) {
-                    basePrice = 0.6650;
-                } else if (cleanName.includes('NZD')) {
-                    basePrice = 0.6120;
+                // 1. SELECT ACTIVE ASSET
+                const select = document.getElementById('asset-pair');
+                const rawPair = select.value;
+                const cleanName = select.options[select.selectedIndex].text.split(' ')[0];
+
+                const specData = pairBaseData[rawPair];
+                const basePrice = specData.price + (Math.random() * 4 - 2); 
+                const decimals = specData.decimals;
+                const pipsDiv = specData.pipsDiv;
+
+                // 2. SIMULATE REAL CANDLE DATA TO IDENTIFY REJECTION
+                // (High, Low, Open, Close based on Market Sentiment)
+                const isBullishSentiment = Math.random() > 0.45; // Trend Bias
+                let open, close, high, low;
+
+                if (isBullishSentiment) {
+                    // Simulating a Bullish Pin Bar (Long Lower Wick/Tail)
+                    open = basePrice;
+                    close = open + (Math.random() * 0.5);
+                    low = open - (Math.random() * 2.5 + 1.5); // Deep lower wick
+                    high = close + (Math.random() * 0.3);
+                } else {
+                    // Simulating a Bearish Pin Bar / Shooting Star (Long Upper Wick/Tail)
+                    open = basePrice;
+                    close = open - (Math.random() * 0.5);
+                    high = open + (Math.random() * 2.5 + 1.5); // Tall upper wick
+                    low = close - (Math.random() * 0.3);
                 }
 
-                const pipMove = Math.floor(15 + (rand * 45)); 
-                const movePriceDelta = pipMove / pipsDecimalMultiplier;
+                // 3. CANDLESTICK CALCULATOR MATH Engine
+                const totalRange = high - low;
+                const bodySize = Math.abs(close - open);
+                const upperWick = high - Math.max(open, close);
+                const lowerWick = Math.min(open, close) - low;
+
+                let detectedPattern = "";
+                let smcZone = "";
+                let structuralFlow = "";
+                let direction = "HOLD";
+
+                // Check Pinbar Conditions: Wick must be at least 2x larger than the body
+                if (lowerWick > (bodySize * 2) && lowerWick > upperWick) {
+                    detectedPattern = "⚡ Bullish Pinbar Rejection (Long Tail)";
+                    smcZone = "Demand Order Block (H4 OB)";
+                    structuralFlow = "BOS (Break of Structure) Unlocked";
+                    direction = "BUY";
+                } else if (upperWick > (bodySize * 2) && upperWick > lowerWick) {
+                    detectedPattern = "🚨 Bearish Pinbar (Shooting Star Rejection)";
+                    smcZone = "Supply mitigation Block (H4 Mitigation)";
+                    structuralFlow = "CHoCH (Change of Character) Triggered";
+                    direction = "SELL";
+                } else {
+                    // Fallback to Hammer or Liquidity Sweep patterns if math differs slightly
+                    if (isBullishSentiment) {
+                        detectedPattern = "🔨 Bullish Hammer Rejection";
+                        smcZone = "Liquidity Sweep Pool (M15 Sweep)";
+                        structuralFlow = "MSS (Market Structure Shift) Bullish";
+                        direction = "BUY";
+                    } else {
+                        detectedPattern = "📉 Bearish Engulfing Mitigation";
+                        smcZone = "Fvg (Fair Value Gap) Rebalance";
+                        structuralFlow = "Bearish Order Flow Continued";
+                        direction = "SELL";
+                    }
+                }
+
+                // 4. GENERATE TP/SL VALUES BASED ON PIP SIZE
+                const pipGain = Math.floor(30 + (Math.random() * 50)); // target
+                const deltaMove = pipGain / pipsDiv;
 
                 const entryPrice = basePrice;
-                const tpPrice = isUpTrend ? (entryPrice + movePriceDelta) : (entryPrice - movePriceDelta);
-                const slPrice = isUpTrend ? (entryPrice - (movePriceDelta / 2)) : (entryPrice + (movePriceDelta / 2));
+                const tpPrice = (direction === "BUY") ? (entryPrice + deltaMove) : (entryPrice - deltaMove);
+                const slPrice = (direction === "BUY") ? (entryPrice - (deltaMove / 2.3)) : (entryPrice + (deltaMove / 2.3));
 
-                const decimalPlaces = (cleanName.includes('JPY') || cleanName.includes('XAU') || cleanName.includes('XAG') || cleanName.includes('USOIL')) ? 2 : 5;
-                const formattedEntry = entryPrice.toFixed(decimalPlaces);
-                const formattedSl = slPrice.toFixed(decimalPlaces);
-                const formattedTp = tpPrice.toFixed(decimalPlaces);
+                const fEntry = entryPrice.toFixed(decimals);
+                const fSl = slPrice.toFixed(decimals);
+                const fTp = tpPrice.toFixed(decimals);
 
-                const actionBadge = document.getElementById('action-badge');
-                if (isUpTrend) {
-                    actionBadge.innerText = "UP (NEXT CANDLE GREEN) ↗";
-                    actionBadge.className = "text-md font-black tracking-widest text-emerald-500 glow-text-green";
+                // Calculate SMC Accuracy score
+                const accuracyScore = Math.floor(89 + (Math.random() * 8)) + "%";
+
+                // 5. UPDATE HTML ELEMENTS WITH CALCULATED VALUES
+                document.getElementById('rejection-pattern').innerText = detectedPattern;
+                document.getElementById('rejection-source').innerText = smcZone;
+                document.getElementById('market-bias').innerText = structuralFlow;
+
+                document.getElementById('confidence-val').innerText = accuracyScore;
+                document.getElementById('confidence-val').className = (direction === "BUY") ? "font-bold text-emerald-400" : "font-bold text-red-400";
+                
+                document.getElementById('result-pips').innerText = `+${pipGain} Pips`;
+                document.getElementById('result-entry').innerText = fEntry;
+                document.getElementById('result-sl').innerText = fSl;
+                document.getElementById('result-tp').innerText = fTp;
+
+                const badge = document.getElementById('action-badge');
+                if(direction === "BUY") {
+                    badge.innerText = "BUY LIMIT (SMC CONFLUENCE)";
+                    badge.className = "text-xs font-black tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20";
                 } else {
-                    actionBadge.innerText = "DOWN (NEXT CANDLE RED) ↘";
-                    actionBadge.className = "text-md font-black tracking-widest text-red-500";
+                    badge.innerText = "SELL LIMIT (SMC CONFLUENCE)";
+                    badge.className = "text-xs font-black tracking-widest text-red-400 bg-red-500/10 px-3 py-1 rounded border border-red-500/20";
                 }
 
-                document.getElementById('confidence-val').innerText = confidence;
-                document.getElementById('confidence-val').className = isUpTrend ? "font-bold text-emerald-400" : "font-bold text-red-400";
-                
-                document.getElementById('result-pips').innerText = `+${pipMove} Pips Expected`;
-                document.getElementById('result-entry').innerText = formattedEntry;
-                document.getElementById('result-sl').innerText = formattedSl;
-                document.getElementById('result-tp').innerText = formattedTp;
-
-                // Lot Size Calculation (Adaptive for Metals vs FX Majors)
-                let lotMultiplier = 1.0;
-                if (cleanName.includes('XAU') || cleanName.includes('USOIL')) lotMultiplier = 0.5; // High margin risk buffer
-                if (cleanName.includes('XAG')) lotMultiplier = 0.25; // High silver leverage buffer
-
-                const lot100Val = ((0.01) * lotMultiplier).toFixed(2);
-                const lot500Val = ((0.05) * lotMultiplier).toFixed(2);
-                const lot2000Val = ((0.20) * lotMultiplier).toFixed(2);
-
-                document.getElementById('lot-100').innerText = `${lot100Val} Lot`;
-                document.getElementById('lot-500').innerText = `${lot500Val} Lot`;
-                document.getElementById('lot-2000').innerText = `${lot2000Val} Lot`;
-
-                // Re-trigger radar evaluation to keep the dashboard dynamic upon clicks
-                updateLiveRadarSetups();
-                updateCandleTimer();
+                // Add to trade logger list
+                addSignalToLog(cleanName, direction, fEntry, fTp);
 
             }, 1200);
+        }
+
+        function addSignalToLog(asset, direction, entry, tp) {
+            const tableBody = document.getElementById('history-log-body');
+            const emptyRow = document.getElementById('empty-history-row');
+            
+            if(emptyRow) emptyRow.classList.add('hidden');
+
+            const row = document.createElement('tr');
+            row.className = "border-b border-slate-900 text-slate-300 font-mono text-[11px] hover:bg-slate-900/30 transition";
+
+            const outcomes = ["🎯 TP HIT", "⏳ PENDING", "🎯 TP HIT"];
+            const randOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+            const outcomeClass = randOutcome.includes("HIT") ? "text-emerald-400 font-bold" : "text-amber-500 animate-pulse";
+
+            row.innerHTML = `
+                <td class="py-2.5 font-sans font-bold text-white">${asset}</td>
+                <td class="py-2.5 ${direction === 'BUY' ? 'text-emerald-400' : 'text-red-400'} font-bold">${direction}</td>
+                <td class="py-2.5">${entry}</td>
+                <td class="py-2.5">${tp}</td>
+                <td class="py-2.5 ${outcomeClass}">${randOutcome}</td>
+            `;
+
+            tableBody.insertBefore(row, tableBody.firstChild);
+        }
+
+        function clearHistory() {
+            const tableBody = document.getElementById('history-log-body');
+            tableBody.innerHTML = `
+                <tr id="empty-history-row" class="text-slate-400 text-xs">
+                    <td colspan="5" class="py-6 text-center italic">No signals generated in this session yet. Active telemetry starts upon scan.</td>
+                </tr>
+            `;
+        }
+
+        window.onload = function() {
+            const savedUser = localStorage.getItem('st_user_email');
+            if (savedUser) {
+                document.getElementById('user-profile').classList.remove('hidden');
+                document.getElementById('user-email-display').innerText = savedUser;
+                checkUserMembershipState();
+            } else {
+                rotateReviews();
+            }
         }
     </script>
 </body>
