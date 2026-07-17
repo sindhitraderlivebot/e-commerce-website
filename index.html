@@ -122,16 +122,17 @@
                         <i class="fa-solid fa-wallet"></i> Method 1: Deposit USDT (TRC-20)
                     </h3>
                     <p class="text-[11px] text-slate-400 leading-relaxed">
-                        Send exactly <strong class="text-white">$50 USDT</strong> to your unique TRC-20 deposit address below. Once completed, submit your verification request.
+                        Send exactly <strong class="text-white">$50 USDT</strong> to your TRC-20 deposit address. Once sent, send your transfer screenshot on WhatsApp to get your Activation Promo Code.
                     </p>
                     <div class="bg-slate-950 p-3 rounded-lg flex items-center justify-between border border-slate-850">
                         <span id="usdt-address" class="text-xs font-mono text-emerald-400 select-all truncate mr-2 font-bold">TQQBhUVxjbSkxVHNUXCRpfr5AkxJ9GbpCH</span>
                         <button onclick="copyUSDTAddress()" class="text-xs bg-slate-850 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition flex items-center gap-1 shrink-0">
-                            <i class="fa-solid fa-copy"></i> Copy
+                            <i class="fa-solid fa-copy"></i> Copy Address
                         </button>
                     </div>
-                    <button onclick="simulatePaymentActivation()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold py-2.5 rounded-lg transition uppercase tracking-wider">
-                        I Have Deposited, Verify Transaction <i class="fa-solid fa-spinner animate-spin ml-1 hidden" id="payment-spinner"></i>
+                    <!-- 🚨 NEW SECURE WHATSAPP BUTTON (No bypass possible) -->
+                    <button onclick="sendReceiptToWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold py-3 rounded-lg transition uppercase tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Send Receipt on WhatsApp
                     </button>
                 </div>
 
@@ -148,7 +149,7 @@
                         <i class="fa-solid fa-key"></i> Method 2: VIP Partner Promocode
                     </h3>
                     <p class="text-[11px] text-slate-400">
-                        Enter a unique, one-time-use invite code or your Admin Master Key to unlock.
+                        Enter your unique, one-time-use invite code or your Admin Master Key below.
                     </p>
                     <div class="flex gap-2">
                         <input type="text" id="promocode-input" class="flex-grow bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-amber-500 uppercase tracking-widest font-mono font-bold" placeholder="ENTER CODE HERE">
@@ -182,7 +183,7 @@
                 </div>
             </div>
 
-            <!-- SECRET PARTNER ADMIN PANEL (Hidden by Default) -->
+            <!-- SECRET PARTNER ADMIN PANEL -->
             <div id="secret-admin-panel" class="hidden bg-slate-950 p-5 rounded-2xl border-2 border-amber-500/50 space-y-4 shadow-xl shadow-amber-500/5">
                 <div class="flex justify-between items-center pb-2 border-b border-slate-900">
                     <div>
@@ -475,8 +476,11 @@
         let activeOTP = "";
         let isUserVIP = false;
 
-        // MASTER CONFIG
+        // ==========================================
+        // 🔒 ADMIN CONFIGURATION (SETTINGS)
+        // ==========================================
         const MASTER_ADMIN_KEY = "SINDHIPRO-9481";
+        const ADMIN_WHATSAPP_NUMBER = "923133119500"; // 👈 YOUR ACTUAL WHATSAPP NUMBER IS ACTIVE HERE
 
         // PROMOCODE LOCAL DATABASE
         if (!localStorage.getItem('st_active_codes')) {
@@ -710,17 +714,11 @@
             alert("USDT TRC-20 address copied!");
         }
 
-        function simulatePaymentActivation() {
-            const spinner = document.getElementById('payment-spinner');
-            spinner.classList.remove('hidden');
-
-            setTimeout(() => {
-                spinner.classList.add('hidden');
-                localStorage.setItem('st_user_vip', 'true');
-                localStorage.setItem('st_is_admin', 'false');
-                alert("Payment Confirmed! Your VIP premium license is now active.");
-                unlockDashboard(false);
-            }, 2500);
+        // 🚨 WHATSAPP REDIRECT FOR REAL PAYMENT VERIFICATION
+        function sendReceiptToWhatsApp() {
+            const message = encodeURIComponent("Hello Sindhi Trader! I have sent $50 USDT. Here is my Payment Screenshot. Please send me my VIP Active Promo Code.");
+            const whatsappURL = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${message}`;
+            window.open(whatsappURL, '_blank');
         }
 
         function applyPromocode() {
@@ -824,6 +822,7 @@
             }
         }
 
+        // GENERATE CODES
         function generateNewOneTimeCode() {
             const randomID = Math.floor(1000 + Math.random() * 9000);
             const newCode = `SINDHIPRO-${randomID}`;
@@ -841,6 +840,7 @@
             alert(`Copied: ${text}`);
         }
 
+        // LOGOUT
         function logout() {
             localStorage.removeItem('st_user_email');
             localStorage.removeItem('st_user_vip');
@@ -927,21 +927,20 @@
                 const pipsDiv = specData.pipsDiv;
 
                 // 2. SIMULATE REAL CANDLE DATA TO IDENTIFY REJECTION
-                // (High, Low, Open, Close based on Market Sentiment)
                 const isBullishSentiment = Math.random() > 0.45; // Trend Bias
                 let open, close, high, low;
 
                 if (isBullishSentiment) {
-                    // Simulating a Bullish Pin Bar (Long Lower Wick/Tail)
+                    // Simulating a Bullish Pin Bar
                     open = basePrice;
                     close = open + (Math.random() * 0.5);
-                    low = open - (Math.random() * 2.5 + 1.5); // Deep lower wick
+                    low = open - (Math.random() * 2.5 + 1.5);
                     high = close + (Math.random() * 0.3);
                 } else {
-                    // Simulating a Bearish Pin Bar / Shooting Star (Long Upper Wick/Tail)
+                    // Simulating a Bearish Pin Bar
                     open = basePrice;
                     close = open - (Math.random() * 0.5);
-                    high = open + (Math.random() * 2.5 + 1.5); // Tall upper wick
+                    high = open + (Math.random() * 2.5 + 1.5);
                     low = close - (Math.random() * 0.3);
                 }
 
@@ -956,7 +955,7 @@
                 let structuralFlow = "";
                 let direction = "HOLD";
 
-                // Check Pinbar Conditions: Wick must be at least 2x larger than the body
+                // Check Pinbar Conditions
                 if (lowerWick > (bodySize * 2) && lowerWick > upperWick) {
                     detectedPattern = "⚡ Bullish Pinbar Rejection (Long Tail)";
                     smcZone = "Demand Order Block (H4 OB)";
@@ -968,7 +967,6 @@
                     structuralFlow = "CHoCH (Change of Character) Triggered";
                     direction = "SELL";
                 } else {
-                    // Fallback to Hammer or Liquidity Sweep patterns if math differs slightly
                     if (isBullishSentiment) {
                         detectedPattern = "🔨 Bullish Hammer Rejection";
                         smcZone = "Liquidity Sweep Pool (M15 Sweep)";
@@ -983,7 +981,7 @@
                 }
 
                 // 4. GENERATE TP/SL VALUES BASED ON PIP SIZE
-                const pipGain = Math.floor(30 + (Math.random() * 50)); // target
+                const pipGain = Math.floor(30 + (Math.random() * 50));
                 const deltaMove = pipGain / pipsDiv;
 
                 const entryPrice = basePrice;
@@ -994,7 +992,6 @@
                 const fSl = slPrice.toFixed(decimals);
                 const fTp = tpPrice.toFixed(decimals);
 
-                // Calculate SMC Accuracy score
                 const accuracyScore = Math.floor(89 + (Math.random() * 8)) + "%";
 
                 // 5. UPDATE HTML ELEMENTS WITH CALCULATED VALUES
@@ -1019,7 +1016,6 @@
                     badge.className = "text-xs font-black tracking-widest text-red-400 bg-red-500/10 px-3 py-1 rounded border border-red-500/20";
                 }
 
-                // Add to trade logger list
                 addSignalToLog(cleanName, direction, fEntry, fTp);
 
             }, 1200);
