@@ -181,18 +181,15 @@
                 </div>
             </div>
 
-            <!-- SECRET PARTNER ADMIN PANEL -->
+            <!-- SECRET PARTNER ADMIN PANEL (Generator Button Removed) -->
             <div id="secret-admin-panel" class="hidden bg-slate-950 p-5 rounded-2xl border-2 border-amber-500/50 space-y-4 shadow-xl shadow-amber-500/5">
                 <div class="flex justify-between items-center pb-2 border-b border-slate-900">
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
                             <i class="fa-solid fa-user-shield text-amber-500 animate-pulse"></i> SECRET SINDHI MASTER PANEL
                         </h3>
-                        <p class="text-[10px] text-slate-400">Welcome boss! You accessed using your permanent key. Generate one-time-use codes below for your friends.</p>
+                        <p class="text-[10px] text-slate-400">1000 one-time promo codes pre-loaded (SINDHIPRO-1001 to SINDHIPRO-2000).</p>
                     </div>
-                    <button onclick="generateNewOneTimeCode()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition shadow-lg shadow-amber-500/20">
-                        <i class="fa-solid fa-plus mr-1"></i> Generate One-Time Code
-                    </button>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -474,13 +471,16 @@
         const MASTER_ADMIN_KEY = "SINDHIPRO-9481";
         const ADMIN_WHATSAPP_NUMBER = "923133119500";
 
-        // LOCAL DATABASE INITIALIZATION (FIRST RUN ONLY)
+        // 1000 Sequential Promo Codes (SINDHIPRO-1001 to SINDHIPRO-2000)
         if (!localStorage.getItem('st_active_codes')) {
-            const initialCodes = ["SINDHIPRO-1102", "SINDHIPRO-7320", "SINDHIPRO-4491"];
-            localStorage.setItem('st_active_codes', JSON.stringify(initialCodes));
+            const codes = [];
+            for (let i = 1001; i <= 2000; i++) {
+                codes.push(`SINDHIPRO-${i}`);
+            }
+            localStorage.setItem('st_active_codes', JSON.stringify(codes));
         }
         if (!localStorage.getItem('st_used_codes')) {
-            localStorage.setItem('st_used_codes', JSON.stringify(["SINDHIPRO-EXPIRED-5501"]));
+            localStorage.setItem('st_used_codes', JSON.stringify([]));
         }
 
         const pairBaseData = {
@@ -712,7 +712,7 @@
         }
 
         // ==========================================
-        // 🔑 FIXED PROMO CODE VALIDATION & BURN MECHANISM
+        // 🔑 PROMO CODE VALIDATION (One-Time Use)
         // ==========================================
         function applyPromocode() {
             const inputField = document.getElementById('promocode-input');
@@ -723,11 +723,10 @@
                 return;
             }
 
-            // Master Code Check (Permanent)
             if (code === MASTER_ADMIN_KEY) {
                 localStorage.setItem('st_user_vip', 'true');
                 localStorage.setItem('st_is_admin', 'true');
-                alert("👑 Admin Master Key Applied!\n\nWelcome Boss. The secret code generation panel has been activated.");
+                alert("👑 Admin Master Key Applied!");
                 unlockDashboard(true);
                 inputField.value = "";
                 return;
@@ -736,45 +735,33 @@
             let activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
             let usedCodes = JSON.parse(localStorage.getItem('st_used_codes')) || [];
 
-            // Normalize for comparison
-            const normalizedActive = activeCodes.map(c => c.toUpperCase());
-            const normalizedUsed = usedCodes.map(c => c.toUpperCase());
-
-            // Check if already used
-            if (normalizedUsed.includes(code)) {
-                alert("❌ This promo code has already been used and is permanently blocked!");
+            if (usedCodes.some(c => c.toUpperCase() === code)) {
+                alert("❌ This promo code has already been used!");
                 inputField.value = "";
                 return;
             }
 
-            // Check active codes
-            const codeIndex = normalizedActive.indexOf(code);
+            const codeIndex = activeCodes.findIndex(c => c.toUpperCase() === code);
             if (codeIndex !== -1) {
-                // Burn the code
                 const burnedCode = activeCodes[codeIndex];
-                
-                // Remove from active
                 activeCodes.splice(codeIndex, 1);
                 localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
-                
-                // Add to used
+
                 usedCodes.push(burnedCode);
                 localStorage.setItem('st_used_codes', JSON.stringify(usedCodes));
 
-                // Grant VIP
                 localStorage.setItem('st_user_vip', 'true');
                 localStorage.setItem('st_is_admin', 'false');
 
-                alert("🎉 PROMO CODE SUCCESS!\n\nVIP access unlocked. This code has been permanently burned and cannot be reused.");
+                alert("🎉 PROMO CODE SUCCESS!\n\nVIP access unlocked. This code has been permanently burned.");
                 unlockDashboard(false);
                 inputField.value = "";
                 
-                // Refresh admin panel if visible
                 if (!document.getElementById('secret-admin-panel').classList.contains('hidden')) {
                     renderPartnerCodes();
                 }
             } else {
-                alert("❌ Invalid code! Enter a valid single-use code or your Admin Master Key.");
+                alert("❌ Invalid code!");
                 inputField.value = "";
             }
         }
@@ -815,7 +802,7 @@
             usedList.innerHTML = "";
 
             if(activeCodes.length === 0) {
-                activeList.innerHTML = `<span class="text-slate-600 italic text-[10px] block py-1">No active codes. Generate one above.</span>`;
+                activeList.innerHTML = `<span class="text-slate-600 italic text-[10px] block py-1">No active codes left.</span>`;
             } else {
                 activeCodes.forEach(code => {
                     const el = document.createElement('div');
@@ -843,29 +830,12 @@
             }
         }
 
-        // GENERATE NEW ONE-TIME CODE
-        function generateNewOneTimeCode() {
-            const randomID = Math.floor(1000 + Math.random() * 9000);
-            const newCode = `SINDHIPRO-${randomID}`;
-
-            let activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
-            
-            if (!activeCodes.includes(newCode)) {
-                activeCodes.push(newCode);
-                localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
-            }
-            
-            renderPartnerCodes(); 
-            
-            alert(`🔥 NEW ONE-TIME CODE GENERATED:\n\n${newCode}\n\nThis code is now live. Share it with your friends! It will burn permanently after single use.`);
-        }
-
         function copyCodeText(text) {
             navigator.clipboard.writeText(text);
             alert(`Copied: ${text}`);
         }
 
-        // LOGOUT
+        // LOGOUT LOGIC
         function logout() {
             localStorage.removeItem('st_user_email');
             localStorage.removeItem('st_user_vip');
