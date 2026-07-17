@@ -603,9 +603,6 @@
             });
         }
 
-        // ==========================================
-        // 🔄 FIXED: INLINE FIX TO SYNC SYMBOL UPDATES
-        // ==========================================
         function onPairChange() {
             const select = document.getElementById('asset-pair');
             currentSymbol = select.value;
@@ -715,57 +712,70 @@
         }
 
         // ==========================================
-        // 🔑 FULLY FIXED SECURE CODE VERIFICATION & BURNING
+        // 🔑 FIXED PROMO CODE VALIDATION & BURN MECHANISM
         // ==========================================
         function applyPromocode() {
             const inputField = document.getElementById('promocode-input');
-            const code = inputField.value.trim().toUpperCase();
+            let code = inputField.value.trim().toUpperCase();
 
             if (!code) {
                 alert("Please enter a code!");
                 return;
             }
 
-            // check for permanent Admin Master Key
+            // Master Code Check (Permanent)
             if (code === MASTER_ADMIN_KEY) {
                 localStorage.setItem('st_user_vip', 'true');
                 localStorage.setItem('st_is_admin', 'true');
                 alert("👑 Admin Master Key Applied!\n\nWelcome Boss. The secret code generation panel has been activated.");
                 unlockDashboard(true);
+                inputField.value = "";
                 return;
             }
 
             let activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
             let usedCodes = JSON.parse(localStorage.getItem('st_used_codes')) || [];
 
-            // 1. First check if it was already burned
-            if (usedCodes.includes(code)) {
+            // Normalize for comparison
+            const normalizedActive = activeCodes.map(c => c.toUpperCase());
+            const normalizedUsed = usedCodes.map(c => c.toUpperCase());
+
+            // Check if already used
+            if (normalizedUsed.includes(code)) {
                 alert("❌ This promo code has already been used and is permanently blocked!");
                 inputField.value = "";
                 return;
             }
 
-            // 2. Validate against currently active list (including generated ones)
-            const codeIndex = activeCodes.indexOf(code);
+            // Check active codes
+            const codeIndex = normalizedActive.indexOf(code);
             if (codeIndex !== -1) {
-                // Remove (BURN) from active pool instantly
-                activeCodes.splice(codeIndex, 1);
+                // Burn the code
+                const burnedCode = activeCodes[codeIndex];
                 
-                // Add to permanently locked pool
-                usedCodes.push(code);
-
-                // Save back to localStorage immediately
+                // Remove from active
+                activeCodes.splice(codeIndex, 1);
                 localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
+                
+                // Add to used
+                usedCodes.push(burnedCode);
                 localStorage.setItem('st_used_codes', JSON.stringify(usedCodes));
 
-                // Grant access
+                // Grant VIP
                 localStorage.setItem('st_user_vip', 'true');
                 localStorage.setItem('st_is_admin', 'false');
 
                 alert("🎉 PROMO CODE SUCCESS!\n\nVIP access unlocked. This code has been permanently burned and cannot be reused.");
                 unlockDashboard(false);
+                inputField.value = "";
+                
+                // Refresh admin panel if visible
+                if (!document.getElementById('secret-admin-panel').classList.contains('hidden')) {
+                    renderPartnerCodes();
+                }
             } else {
                 alert("❌ Invalid code! Enter a valid single-use code or your Admin Master Key.");
+                inputField.value = "";
             }
         }
 
@@ -792,7 +802,7 @@
             }, 100);
         }
 
-        // RENDER ACTIVE AND USED CODES IN ADMIN PANEL
+        // RENDER ACTIVE AND USED CODES
         function renderPartnerCodes() {
             const activeList = document.getElementById('active-codes-list');
             const usedList = document.getElementById('used-codes-list');
@@ -833,19 +843,18 @@
             }
         }
 
-        // ==========================================
-        // 🛠️ BUG FIX: GENERATE FRESH ACTIVE CODE & AUTO-RENDER
-        // ==========================================
+        // GENERATE NEW ONE-TIME CODE
         function generateNewOneTimeCode() {
             const randomID = Math.floor(1000 + Math.random() * 9000);
             const newCode = `SINDHIPRO-${randomID}`;
 
             let activeCodes = JSON.parse(localStorage.getItem('st_active_codes')) || [];
-            activeCodes.push(newCode);
-
-            localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
             
-            // 🔥 CRITICAL FIX: फ़ौरन UI को री-रेंडर करें ताकि कोड तुरंत लिस्ट में दिखने लगे!
+            if (!activeCodes.includes(newCode)) {
+                activeCodes.push(newCode);
+                localStorage.setItem('st_active_codes', JSON.stringify(activeCodes));
+            }
+            
             renderPartnerCodes(); 
             
             alert(`🔥 NEW ONE-TIME CODE GENERATED:\n\n${newCode}\n\nThis code is now live. Share it with your friends! It will burn permanently after single use.`);
@@ -856,7 +865,7 @@
             alert(`Copied: ${text}`);
         }
 
-        // LOGOUT LOGIC
+        // LOGOUT
         function logout() {
             localStorage.removeItem('st_user_email');
             localStorage.removeItem('st_user_vip');
@@ -914,9 +923,6 @@
             }
         }
 
-        // ==========================================
-        // 🚀 LIVE SMC & CANDLESTICK REJECTION ALGORITHM
-        // ==========================================
         function generateSignal() {
             const loader = document.getElementById('signal-loader');
             const placeholder = document.getElementById('signal-placeholder');
@@ -956,7 +962,6 @@
                     low = close - (Math.random() * 0.3);
                 }
 
-                const totalRange = high - low;
                 const bodySize = Math.abs(close - open);
                 const upperWick = high - Math.max(open, close);
                 const lowerWick = Math.min(open, close) - low;
